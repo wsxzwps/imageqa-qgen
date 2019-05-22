@@ -52,7 +52,7 @@ from nltk.corpus import wordnet
 from nltk.stem.wordnet import WordNetLemmatizer
 import argparse
 import copy
-import cPickle as pkl
+import pickle as pkl
 import logger
 import os
 import re
@@ -256,7 +256,7 @@ class TreeParser:
 
     @staticmethod
     def exception(raw, i):
-        print raw
+        print(raw)
         raise Exception(
             'Unexpected character "%c" (%d) at position %d'
             % (raw[i], ord(raw[i]), i))
@@ -1057,7 +1057,7 @@ def parseArgs():
     parser = argparse.ArgumentParser(description='Question Generator')
     parser.add_argument(
         '-parser_path',
-        default='/home/mren/third_party/stanford-parser-full-2015-04-20',
+        default='parser/stanford-parser-full-2015-04-20',
         help='Path to stanford parser')
     parser.add_argument(
         '-sentence', default=None, help='Single sentence input')
