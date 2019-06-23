@@ -1,0 +1,45 @@
+(ROOT
+  (S
+    (NP (DT The) (NN man))
+    (VP
+      (VP (VBZ walks)
+        (NP (DT the) (NNS bars)))
+      (, ,)
+      (VP (VBZ stretches))
+      (CC and)
+      (VP (VBZ stands)
+        (ADVP (RB there))))
+    (. .)))
+
+det(man-2, The-1)
+nsubj(walks-3, man-2)
+nsubj(stretches-7, man-2)
+nsubj(stands-9, man-2)
+root(ROOT-0, walks-3)
+det(bars-5, the-4)
+dobj(walks-3, bars-5)
+conj:and(walks-3, stretches-7)
+cc(walks-3, and-8)
+conj:and(walks-3, stands-9)
+advmod(stands-9, there-10)
+
+(ROOT
+  (S
+    (NP
+      (NP (DT A) (JJ little) (NN boy))
+      (VP (VBG holding)
+        (NP (DT a) (JJ yellow) (NN ball))))
+    (VP (VBZ walks)
+      (PP (IN by)))
+    (. .)))
+
+det(boy-3, A-1)
+amod(boy-3, little-2)
+nsubj(walks-8, boy-3)
+acl(boy-3, holding-4)
+det(ball-7, a-5)
+amod(ball-7, yellow-6)
+dobj(holding-4, ball-7)
+root(ROOT-0, walks-8)
+nmod(walks-8, by-9)
+

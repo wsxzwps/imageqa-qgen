@@ -69,6 +69,8 @@ whiteListLexname = set(['noun.animal', 'noun.artifact', 'noun.food',
                         'noun.object', 'noun.plant', 'noun.possession',
                         'noun.shape'])
 
+whiteListHumanLexname = set(['noun.person'])
+
 # A black list for nouns with color.
 blackListColorNoun = set(['ride', 'riding', 'past', 'stand', 'standing',
                           'eating', 'holding', 'frosting', 'glow', 'glowing',
@@ -395,6 +397,9 @@ class QuestionGenerator:
         line = re.sub('^8$', 'eight', line)
         line = re.sub('^9$', 'nine', line)
         return line
+    
+    def isHuman(self, lexname):
+        return True
 
     def whMovement(self, root):
         """Performs WH - movement on a tree."""
@@ -492,8 +497,8 @@ class QuestionGenerator:
                     vpnode.children.insert(0, verbnode)
             return True
 
-        if insideSBar:
-            return False
+        # if insideSBar:
+        #     return False
         if insideVP:
             return False
 
@@ -504,6 +509,9 @@ class QuestionGenerator:
         vpnode = stack[0][-1]
         vpchild = vpnode.children[0]
         frontWord = None
+
+        # if vpchild.className == 'VP':
+
         if vpchild.className == 'VBZ':  # is, has, singular present
             if vpchild.text == 'is':
                 frontWord = vpchild
@@ -745,6 +753,7 @@ class QuestionGenerator:
                                         parent.children.index(node) + 1]\
                                         .className == 'NP':
                                     break
+                        # where should be asked here
                         # The two people are walking down the ``beach''
                         foundDown = False
                         if parent.children.index(node) != 0:
@@ -760,6 +769,9 @@ class QuestionGenerator:
                             if lexname in whiteListLexname and \
                                     not child.text.lower() in blackListNoun:
                                 whword = 'what'
+                            if lexname in whiteListHumanLexname and \
+                                    not child.text.lower() in blackListNoun:
+                                whword = 'who'
                             if whword is not None:
                                 answer[0] = child.text
                                 found[0] = True
@@ -807,6 +819,7 @@ class QuestionGenerator:
             found[0] = False
             answer[0] = None
             rootsReplaceWhat[0] = []
+
 
     def askHowMany(self, root):
         """Ask couting questions."""
