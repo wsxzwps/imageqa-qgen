@@ -510,7 +510,24 @@ class QuestionGenerator:
         vpchild = vpnode.children[0]
         frontWord = None
 
-        # if vpchild.className == 'VP':
+        def hasWh(node):
+            found = False
+            if node.className == 'WHNP':
+                found = True
+            else:
+                for child in node.children:
+                    if hasWh(child):
+                        found = True
+            return found
+
+        if vpchild.className == 'VP':
+            with open('debug','a') as f:
+                f.write(str(root))
+            for child in vpnode.children:
+                if hasWh(child):
+                    vpnode = child
+                    vpchild = vpnode.children[0]
+
 
         if vpchild.className == 'VBZ':  # is, has, singular present
             if vpchild.text == 'is':
@@ -769,9 +786,9 @@ class QuestionGenerator:
                             if lexname in whiteListLexname and \
                                     not child.text.lower() in blackListNoun:
                                 whword = 'what'
-                            if lexname in whiteListHumanLexname and \
-                                    not child.text.lower() in blackListNoun:
-                                whword = 'who'
+                            # if lexname in whiteListHumanLexname and \
+                            #         not child.text.lower() in blackListNoun:
+                            #     whword = 'who'
                             if whword is not None:
                                 answer[0] = child.text
                                 found[0] = True
