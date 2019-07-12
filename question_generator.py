@@ -398,9 +398,6 @@ class QuestionGenerator:
         line = re.sub('^9$', 'nine', line)
         return line
     
-    def isHuman(self, lexname):
-        return True
-
     def whMovement(self, root):
         """Performs WH - movement on a tree."""
         stack = [[]]  # A hack for closure support
@@ -481,6 +478,10 @@ class QuestionGenerator:
 
         node = root
         parent = root
+        
+        # it tries to find the subject which is replaced with a WHNP
+        # unfortunately, if a sentence starts with 'then' or some other words
+        # this part will fail
         while len(node.children) > 0:
             parent = node
             node = node.children[0]
@@ -521,12 +522,27 @@ class QuestionGenerator:
             return found
 
         if vpchild.className == 'VP':
-            with open('debug','a') as f:
-                f.write(str(root))
-            for child in vpnode.children:
+
+            for i in range(len(vpnode.children)):
+                child = vpnode.children[i]
                 if hasWh(child):
-                    vpnode = child
-                    vpchild = vpnode.children[0]
+                    if child.className == 'VP':
+                        new_node = child
+                        vpchild = new_node.children[0]
+                        vpnode.children = [new_node]
+                        vpnode = new_node
+                        break
+                    # Some rare collocations are wrongly parsed.
+                    # They have a form like VP + WHNP in the same level of the parsed tree.
+                    elif i > 0 and vpnode.children[i-1].className == 'VP':
+                        new_node = vpnode.children[i-1]
+                        vpchild = new_node.children[0]
+                        vpnode.children = [new_node, child]
+                        vpnode = new_node
+                        break
+
+
+                    
 
 
         if vpchild.className == 'VBZ':  # is, has, singular present
@@ -552,7 +568,7 @@ class QuestionGenerator:
                 vpchild.className = 'VB'
                 vpchild.text = lemmatizer.lemmatize(vpchild.text, 'v')
             pass
-        elif vpchild.className == 'VBP':  # do, have, present
+        elif vpchild.className == 'VBP' or vpchild.className == 'VB':  # do, have, present
             if vpchild.text == 'are':
                 frontWord = vpchild
                 vpnode.children.remove(vpchild)
@@ -786,9 +802,9 @@ class QuestionGenerator:
                             if lexname in whiteListLexname and \
                                     not child.text.lower() in blackListNoun:
                                 whword = 'what'
-                            # if lexname in whiteListHumanLexname and \
-                            #         not child.text.lower() in blackListNoun:
-                            #     whword = 'who'
+                            if lexname in whiteListHumanLexname and \
+                                    not child.text.lower() in blackListNoun:
+                                whword = 'who'
                             if whword is not None:
                                 answer[0] = child.text
                                 found[0] = True

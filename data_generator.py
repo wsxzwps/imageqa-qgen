@@ -16,12 +16,12 @@
 # import pickle
 # import json
 
-# with open('question.pkl','rb') as f:
+# with open('questions_Who.pkl','rb') as f:
 #     q = pickle.load(f)
 
 # word_dict = {}
 
-# with open('questions.txt', 'w') as f:
+# with open('questions_Who.txt', 'w') as f:
 #     for question in q:
 #         f.write(str(question[0])+'\t'+question[1]+'\t'+question[2]+'\t'+question[3]+'\n')
 #         sentence = question[2].split()
@@ -36,8 +36,6 @@
 #         else:
 #             word_dict[sentence[0]][sentence[1]][sentence[2]] += 1
 
-            
-# with open()
 
 from collections import Counter, defaultdict
 import json
@@ -91,7 +89,7 @@ def normalize(token: Dict[str, Any]) -> str:
 
 def main():
 
-    with open('question.pkl','rb') as f:
+    with open('questions_Who.pkl','rb') as f:
         q = pickle.load(f)
     
     sentences = []
