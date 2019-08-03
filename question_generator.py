@@ -482,6 +482,15 @@ class QuestionGenerator:
         # it tries to find the subject which is replaced with a WHNP
         # unfortunately, if a sentence starts with 'then' or some other words
         # this part will fail
+
+        # find the first NP among the children of S
+        # sentence = root.children[0].children
+        # for i in range(len(sentence)):
+        #     if sentence[i].className == 'WHNP' and i<len(sentence)-1\
+        #         and sentence[i+1].className == 'VP':
+        #         parent = sentence[i]
+        #         node = sentence[i].children[0]
+
         while len(node.children) > 0:
             parent = node
             node = node.children[0]
@@ -659,6 +668,15 @@ class QuestionGenerator:
             else:
                 return None
 
+    # if WHNP is the subject of a sentence, we don't need to move wh
+    def whSubject(self, root):
+        sentence = root.children[0].children
+        for i in range(len(sentence)):
+            if sentence[i].className == 'WHNP' and i<len(sentence)-1\
+                and sentence[i+1].className == 'VP':
+                return True
+        return False
+
     def askWhere(self, root):
         """Ask location type questions."""
         found = [False]
@@ -710,9 +728,15 @@ class QuestionGenerator:
                             parent.children.remove(child)
         traverse(root, None)
         if found[0]:
-            if self.whMovement(root):
-                if root.children[0].children[-1].className != '.':
-                    root.children[0].children.append(TreeNode('.', '?', [], 2))
+            if root.children[0].children[-1].className != '.':
+                root.children[0].children.append(TreeNode('.', '?', [], 2))
+            else:
+                root.children[0].children[-1].text = '?'
+            if self.whSubject(root):
+                return [(root.toSentence().lower(), answer[0])]
+            elif self.whMovement(root):
+                # if root.children[0].children[-1].className != '.':
+                #     root.children[0].children.append(TreeNode('.', '?', [], 2))
                 return [(root.toSentence().lower(), answer[0])]
             else:
                 return []
@@ -726,7 +750,12 @@ class QuestionGenerator:
         # Unlike in 'how many', here we enumerate all possible 'what's
         rootsReplaceWhat = [[]]
 
+        sub_root = None
+
         def traverse(node, parent):
+
+            rootcopy = node.copy()    
+            
             # if node.className != 'PP':
             cont = True
             # For now, not asking any questions inside PP.
@@ -786,7 +815,6 @@ class QuestionGenerator:
                                         parent.children.index(node) + 1]\
                                         .className == 'NP':
                                     break
-                        # where should be asked here
                         # The two people are walking down the ``beach''
                         foundDown = False
                         if parent.children.index(node) != 0:
@@ -802,9 +830,9 @@ class QuestionGenerator:
                             if lexname in whiteListLexname and \
                                     not child.text.lower() in blackListNoun:
                                 whword = 'what'
-                            if lexname in whiteListHumanLexname and \
-                                    not child.text.lower() in blackListNoun:
-                                whword = 'who'
+                            # if lexname in whiteListHumanLexname and \
+                            #         not child.text.lower() in blackListNoun:
+                            #     whword = 'who'
                             if whword is not None:
                                 answer[0] = child.text
                                 found[0] = True
@@ -829,14 +857,18 @@ class QuestionGenerator:
                     else:
                         node.children[node.children.index(replace)] = TreeNode(
                             'WHNP', '', [what], node.level + 2)
-                    rootcopy = root.copy()
+                    rootcopy = sub_root.copy()
                     rootcopy.answer = replace
+                    # rootsReplaceWhat = rootcopy
                     rootsReplaceWhat[0].append(rootcopy)
                     node.className = 'NP'
                     node.children = children_bak
+                    return True
+            return False
 
         rootsSplitCC = self.splitCCStructure(root)
         for r in rootsSplitCC:
+            sub_root = r
             traverse(r, None)
             for r2 in rootsReplaceWhat[0]:
                 if r2.children[0].children[-1].className != '.':
@@ -844,9 +876,9 @@ class QuestionGenerator:
                 else:
                     r2.children[0].children[-1].text = '?'
                 if found[0]:
-                    self.whMovement(r2)
-                    yield (r2.toSentence().lower(),
-                           self.escapeNumber(r2.answer.text.lower()))
+                    if self.whSubject(r2) or self.whMovement(r2):
+                        yield (r2.toSentence().lower(),
+                            self.escapeNumber(r2.answer.text.lower()))
                 else:
                     pass
             found[0] = False

@@ -13,6 +13,29 @@
 #         f.write(sentence.strip())
 #         f.write('\n')
 
+import json
+import pickle
+with open('data/train.json', 'r') as f:
+    data = json.load(f)
+
+id_dictionary = []
+
+for key in data:
+    for i in range(len(data[key]['sentences'])):
+        id_dictionary.append((key, data[key]['timestamps'][i]))
+
+with open('questions_subject.pkl', 'rb') as f:
+    q = pickle.load(f)
+
+with open('q.txt','w') as fq:
+    with open('a.txt', 'w') as fa:
+        for question in q:
+            question_time_pair = id_dictionary[question[0]]
+            fq.write(question_time_pair[0]+'\t'+str(question_time_pair[1])+'\n'+question[2]+'\n')
+            fq.write('\n')
+            fa.write(question[3]) 
+            fa.write('\n')
+
 # import pickle
 # import json
 
@@ -37,75 +60,75 @@
 #             word_dict[sentence[0]][sentence[1]][sentence[2]] += 1
 
 
-from collections import Counter, defaultdict
-import json
-import pickle
-from typing import Any, Dict, Iterator, List
+# from collections import Counter, defaultdict
+# import json
+# import pickle
+# from typing import Any, Dict, Iterator, List
 
-# from conllu import parse
+# # from conllu import parse
 
-MAX_INDEX = 2  # We suppose all sentences have length at least MAX_INDEX + 1.
-
-
-def create_empty_counter(i: int = 0) -> Dict[str, Any]:
-    empty_counter = {'counter': Counter()}
-    if i < MAX_INDEX:
-        empty_counter['sub_counters'] = defaultdict(lambda: create_empty_counter(i=i + 1))
-    return empty_counter
+# MAX_INDEX = 2  # We suppose all sentences have length at least MAX_INDEX + 1.
 
 
-def count(sentence: Iterator[str], counter_dict: Dict[str, Any]) -> None:
-    token = next(sentence)
-
-    counter_dict['counter'][token] += 1
-
-    if 'sub_counters' in counter_dict:
-        count(sentence, counter_dict['sub_counters'][token])
+# def create_empty_counter(i: int = 0) -> Dict[str, Any]:
+#     empty_counter = {'counter': Counter()}
+#     if i < MAX_INDEX:
+#         empty_counter['sub_counters'] = defaultdict(lambda: create_empty_counter(i=i + 1))
+#     return empty_counter
 
 
-def to_plot_format(counter_dict: Dict[str, Any]) -> List[Dict[str, Any]]:
-    return_list = []
+# def count(sentence: Iterator[str], counter_dict: Dict[str, Any]) -> None:
+#     token = next(sentence)
 
-    counter_dict_counter = counter_dict['counter']
-    for token, size in counter_dict_counter.most_common():
-        token_dict = {'name': token}
-        sub_counters = counter_dict.get('sub_counters')
-        if sub_counters:
-            token_dict['children'] = to_plot_format(sub_counters[token])
-        else:
-            token_dict['size'] = size
-        return_list.append(token_dict)
+#     counter_dict['counter'][token] += 1
 
-    return return_list
+#     if 'sub_counters' in counter_dict:
+#         count(sentence, counter_dict['sub_counters'][token])
 
 
-def normalize(token: Dict[str, Any]) -> str:
-    token_form = token.lower()
+# def to_plot_format(counter_dict: Dict[str, Any]) -> List[Dict[str, Any]]:
+#     return_list = []
 
-    if token_form == '\'s':  # All the 's in the graph are actually "is".
-        token_form = 'is'
+#     counter_dict_counter = counter_dict['counter']
+#     for token, size in counter_dict_counter.most_common():
+#         token_dict = {'name': token}
+#         sub_counters = counter_dict.get('sub_counters')
+#         if sub_counters:
+#             token_dict['children'] = to_plot_format(sub_counters[token])
+#         else:
+#             token_dict['size'] = size
+#         return_list.append(token_dict)
 
-    return token_form
+#     return return_list
 
-def main():
 
-    with open('questions_Who.pkl','rb') as f:
-        q = pickle.load(f)
+# def normalize(token: Dict[str, Any]) -> str:
+#     token_form = token.lower()
+
+#     if token_form == '\'s':  # All the 's in the graph are actually "is".
+#         token_form = 'is'
+
+#     return token_form
+
+# def main():
+
+#     with open('questions_Who.pkl','rb') as f:
+#         q = pickle.load(f)
     
-    sentences = []
+#     sentences = []
 
-    for question in q:
-        sentences.append(question[2].split())
+#     for question in q:
+#         sentences.append(question[2].split())
 
-    counter_dict = create_empty_counter()
-    for sentence in sentences:
-        count((normalize(token) for token in sentence), counter_dict)
+#     counter_dict = create_empty_counter()
+#     for sentence in sentences:
+#         count((normalize(token) for token in sentence), counter_dict)
 
-    count_list = to_plot_format(counter_dict)
+#     count_list = to_plot_format(counter_dict)
 
-    with open('sunburst_plot_data.json', 'w') as file:
-        json.dump({'name': '', 'children': count_list}, file, indent=2)
+#     with open('sunburst_plot_data.json', 'w') as file:
+#         json.dump({'name': '', 'children': count_list}, file, indent=2)
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
