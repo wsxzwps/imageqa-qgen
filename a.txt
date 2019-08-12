@@ -13872,8 +13872,3 @@ restaurant
 pot
 cooker
 tomatoes
-cooker
-pot
-cooker
-pasta
-dish
