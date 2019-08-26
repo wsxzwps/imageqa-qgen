@@ -1,0 +1,93 @@
+(ROOT
+  (S
+    (S
+      (NP
+        (NP (JJ Large) (JJ yellow) (NNS words))
+        (PP (IN on)
+          (NP (DT the) (NN screen))))
+      (VP (VBP appear)))
+    (CC and)
+    (S
+      (NP (PRP it))
+      (VP (VBP say)
+        (SBAR
+          (S
+            (NP (PRP 's))
+            (`` ``)
+            (NP
+              (NP (NNP Team) (NNP Nerdist) (NNP Wins) (. !) ('' ''))
+              (CC and)
+              (NP (DT the) (JJ entire) (NN team)))
+            (VP
+              (VP (VBZ gets)
+                (PRT (RP up)))
+              (CC and)
+              (VP (VBZ celebrates)))))))
+    (. .)))
+
+amod(words-3, Large-1)
+amod(words-3, yellow-2)
+nsubj(appear-7, words-3)
+case(screen-6, on-4)
+det(screen-6, the-5)
+nmod:on(words-3, screen-6)
+root(ROOT-0, appear-7)
+cc(appear-7, and-8)
+nsubj(say-10, it-9)
+conj:and(appear-7, say-10)
+nsubj(gets-22, 's-11)
+nsubj(celebrates-25, 's-11)
+compound(Wins-15, Team-13)
+compound(Wins-15, Nerdist-14)
+nsubj(gets-22, Wins-15)
+cc(Wins-15, and-18)
+det(team-21, the-19)
+amod(team-21, entire-20)
+conj:and(Wins-15, team-21)
+nsubj(gets-22, team-21)
+ccomp(say-10, gets-22)
+compound:prt(gets-22, up-23)
+cc(gets-22, and-24)
+ccomp(say-10, celebrates-25)
+conj:and(gets-22, celebrates-25)
+
+(ROOT
+  (S
+    (SBAR (IN As)
+      (S
+        (NP (DT the) (NN rider))
+        (VP (VBZ walks)
+          (PRT (RP away)))))
+    (, ,)
+    (NP (DT the) (NNS words))
+    (VP (VBP Do)
+      (SBAR
+        (S
+          (NP (PRP you))
+          (VP (VBP think)
+            (NP
+              (NP
+                (NP (PRP it) (POS 's))
+                (NNP easy) (. ?) (NNP Appear))
+              (PP (IN on)
+                (NP (DT the) (NN screen))))))))
+    (. .)))
+
+mark(walks-4, As-1)
+det(rider-3, the-2)
+nsubj(walks-4, rider-3)
+advcl(Do-9, walks-4)
+compound:prt(walks-4, away-5)
+det(words-8, the-7)
+nsubj(Do-9, words-8)
+root(ROOT-0, Do-9)
+nsubj(think-11, you-10)
+ccomp(Do-9, think-11)
+nmod:poss(Appear-16, it-12)
+case(it-12, 's-13)
+compound(Appear-16, easy-14)
+dobj(think-11, Appear-16)
+case(screen-19, on-17)
+det(screen-19, the-18)
+nmod:on(Appear-16, screen-19)
+

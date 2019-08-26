@@ -77,7 +77,7 @@ blackListColorNoun = set(['ride', 'riding', 'past', 'stand', 'standing',
                           'resting', 'parked'])
 
 # A black list for nouns to appear in object type questions.
-blackListNoun = set(['female', 'females', 'male', 'males', 'commuter',
+blackListNoun = set(['camera','lens','screen','screens','female', 'females', 'male', 'males', 'commuter',
                      'commuters', 'player', 'players', 'match', 'matches',
                      'rider', 'riders', 'doll', 'dolls', 'ride', 'rides',
                      'riding', 'past', 'pasts', 'teddy', 'fan', 'fans',
@@ -622,9 +622,19 @@ class QuestionGenerator:
 
         # Remove WHNP from its parent.
         whStack[whPosition - 1].children.remove(whStack[whPosition])
-        bigS = TreeNode('S', '', [whStack[whPosition], stack[0][1]], 0)
+        # bigS = TreeNode('S', '', [whStack[whPosition], stack[0][1]], 0)
+        bigS = TreeNode('S', '', [stack[0][1]], 0)
         stack[0][0].children = [bigS]
-        bigS.children[1].children.insert(0, frontWord)
+
+        sentence = bigS.children[0].children
+        position = 0
+        for i in range(len(sentence)-1):
+            if sentence[i].className == 'NP' and sentence[i+1].className == 'VP':
+                position = i
+                break
+        bigS.children[0].children.insert(position, frontWord)
+        bigS.children[0].children.insert(position, whStack[whPosition])
+        
 
         # Reassign levels to the new tree.
         root.relevel(0)
@@ -979,8 +989,9 @@ class QuestionGenerator:
                             not child.text.lower() in blackListColorNoun:
                         obj[0] = child
                 if found[0] and obj[0] is not None:
-                    qa[0].append(((template % obj[0].text).lower(),
-                                  answer[0].text.lower()))
+                    if obj[0].text != 'screen' and obj[0].text != 'screens':
+                        qa[0].append(((template % obj[0].text).lower(),
+                                    answer[0].text.lower()))
                     found[0] = False
                     obj[0] = None
                     answer[0] = None
@@ -1022,11 +1033,13 @@ def questionGen(parseFilename, outputFilename=None):
         for line in f:
             if len(parser.rootsList) > 0:
                 origSent = parser.rootsList[0].toSentence()
-
+                with open('debug', 'a') as f1:
+                    f1.write(origSent + '\n')
                 # 0 is what-who question type
                 for qaitem in gen.askWhoWhat(newTree()):
                     # Ignore too short questions
                     if len(qaitem[0].split(' ')) < 5:
+                        # qCount += 1
                         continue
                     qCount += 1
                     addItem(qaitem, origSent, 0)

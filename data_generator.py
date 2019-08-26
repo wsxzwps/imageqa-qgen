@@ -1,28 +1,39 @@
 # import json
+# import pickle
 # with open('data/train.json', 'r') as f:
 #     data = json.load(f)
 
 # sentences = []
+# id_dictionary = []
 # for key in data:
-#     sentences.extend(data[key]['sentences'])
+#     for i in range(len(data[key]['sentences'])):
+#         sentence = data[key]['sentences'][i]
+#         if len(sentence.split()) > 30:
+#             continue
+#         id_dictionary.append((key,data[key]['timestamps'][i]))
+#         sentences.append(sentence)
 
 # with open('train.txt', 'w', encoding='utf-8') as f:
 #     for sentence in sentences:
-#         if len(sentence.split()) > 30:
-#             continue
 #         f.write(sentence.strip())
 #         f.write('\n')
 
+# with open('id_dictionary.pkl', 'wb') as f:
+#     pickle.dump(id_dictionary, f)
+
+# with open('train.txt', 'r') as f:
+#     s = f.readlines()
+
+# for i in range(len(sentences)):
+#     if sentences[i].strip() != s[i].strip():
+#         print(sentences[i])
+#         print(s[i])
+
 import json
 import pickle
-with open('data/train.json', 'r') as f:
-    data = json.load(f)
 
-id_dictionary = []
-
-for key in data:
-    for i in range(len(data[key]['sentences'])):
-        id_dictionary.append((key, data[key]['timestamps'][i]))
+with open('id_dictionary.pkl', 'rb') as f:
+    id_dictionary = pickle.load(f)
 
 with open('questions_subject.pkl', 'rb') as f:
     q = pickle.load(f)
@@ -39,12 +50,12 @@ with open('q.txt','w') as fq:
 # import pickle
 # import json
 
-# with open('questions_Who.pkl','rb') as f:
+# with open('questions_subject.pkl','rb') as f:
 #     q = pickle.load(f)
 
-# word_dict = {}
+# # word_dict = {}
 
-# with open('questions_Who.txt', 'w') as f:
+# with open('questions_subject.txt', 'w') as f:
 #     for question in q:
 #         f.write(str(question[0])+'\t'+question[1]+'\t'+question[2]+'\t'+question[3]+'\n')
 #         sentence = question[2].split()
