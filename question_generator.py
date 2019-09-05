@@ -978,6 +978,7 @@ class QuestionGenerator:
                             child.text.lower() in whiteListColorAdj:
                         found[0] = True
                         answer[0] = child
+                        
                     if child.className == 'CC' and \
                             child.text == 'and':
                         # Blue and white? No.

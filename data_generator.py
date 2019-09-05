@@ -35,11 +35,11 @@ import pickle
 with open('id_dictionary.pkl', 'rb') as f:
     id_dictionary = pickle.load(f)
 
-with open('questions_subject.pkl', 'rb') as f:
+with open('blanks.pkl', 'rb') as f:
     q = pickle.load(f)
 
-with open('q.txt','w') as fq:
-    with open('a.txt', 'w') as fa:
+with open('q_blank.txt','w') as fq:
+    with open('a_blank.txt', 'w') as fa:
         for question in q:
             question_time_pair = id_dictionary[question[0]]
             fq.write(question_time_pair[0]+'\t'+str(question_time_pair[1])+'\n'+question[2]+'\n')
