@@ -1,12 +1,15 @@
 import nltk
 
+# nlkt.download('punkt')
+# nlkt.download('averaged_perceptron_tagger')
+
 def gen(text, parsed_sentence, outputFile):
     for i in range(len(parsed_sentence)):
         if parsed_sentence[i][1] == 'NN':
             new_sentence = text[:]
             new_sentence[i] = '[MASK]'
             with open(outputFile, 'w') as f:
-                f.write(new_sentence)
+                f.write(' '.join(new_sentence))
                 f.write('\n')
 
 def questionGen(inputFile, outputFile):
