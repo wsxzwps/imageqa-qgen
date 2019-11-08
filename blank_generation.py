@@ -754,11 +754,7 @@ class QuestionGenerator:
         # Unlike in 'how many', here we enumerate all possible 'what's
         rootsReplaceWhat = [[]]
 
-        sub_root = None
-
         def traverse(node, parent):
-
-            rootcopy = node.copy()    
             
             # if node.className != 'PP':
             cont = True
@@ -794,11 +790,11 @@ class QuestionGenerator:
                  node.children[0].text.startswith('take')):
                 cont = False
 
-            # TRUNCATE SBAR!!!!!
-            for child in node.children:
-                if child.className == 'SBAR' or \
-                        (child.level > 1 and child.className == 'S'):
-                    node.children.remove(child)
+            # # TRUNCATE SBAR!!!!!
+            # for child in node.children:
+            #     if child.className == 'SBAR' or \
+            #             (child.level > 1 and child.className == 'S'):
+            #         node.children.remove(child)
 
             if cont:
                 for child in node.children:
@@ -807,8 +803,7 @@ class QuestionGenerator:
                         traverse(child, node)
 
             if node.className == 'NP' and not ccNoun:
-                replace = None
-                whword = None
+
                 for child in node.children:
                     # A wide ``angle'' view of the kitchen work area
                     if parent is not None:
@@ -839,7 +834,6 @@ class QuestionGenerator:
                                 answer[0] = child.text.lower()
                                 child.text = '[BLANK]'
                                 found[0] = True
-                                replace = child
                                 if answer[0] not in blackListNoun:
                                     return True
                 # if replace != None and not answer[0].lower() in blackListNoun:
@@ -873,7 +867,6 @@ class QuestionGenerator:
 
         rootsSplitCC = self.splitCCStructure(root)
         for r in rootsSplitCC:
-            sub_root = r
             traverse(r, None)
             if r.children[0].children[-1].className != '.':
                 r.children[0].children.append(TreeNode('.', '.', [], 2))
