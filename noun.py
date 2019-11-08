@@ -1,4 +1,5 @@
 import nltk
+import pkl
 
 # nlkt.download('punkt')
 # nlkt.download('averaged_perceptron_tagger')
@@ -31,6 +32,7 @@ def main():
     inputFile = 'train.txt'
     outputFile = 'noun_blank.txt'
     questionGen(inputFile, outputFile)
+    pickle.dump(word_dict, 'nouns.pkl')
 
 if __name__ == '__main__':
     main()
