@@ -279,3 +279,5 @@ def questionGen(parseFilename, outputFilename=None):
 def main():
     questionGen(parseFilename, outputFilename)
 
+if __name__ == '__main__':
+    main()
