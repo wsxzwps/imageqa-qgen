@@ -11,10 +11,12 @@ def gen(text, parsed_sentence, outputFile):
 
 def questionGen(inputFile, outputFile):
     with open(inputFile, 'r') as f:
-        while (line = f.readline()):
+        line = f.readline()
+        while line:
             text = nltk.word_tokenize(line.strip())
             parsed_sentence = nltk.pos_tag(text)
             gen(text, parsed_sentence, outputFile)
+            line = f.readline()
 
 def main():
     inputFile = 'train.txt'
