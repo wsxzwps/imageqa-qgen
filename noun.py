@@ -276,3 +276,6 @@ def questionGen(parseFilename, outputFilename=None):
         with open(outputFilename, 'wb') as f:
             pkl.dump(questionAll, f)
 
+def main():
+    questionGen(parseFilename, outputFilename)
+
