@@ -1,5 +1,5 @@
 import nltk
-import pkl
+import pickle
 
 # nlkt.download('punkt')
 # nlkt.download('averaged_perceptron_tagger')
