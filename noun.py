@@ -35,7 +35,7 @@ def main():
     inputFile = 'train.txt'
     outputFile = 'noun_blank.txt'
     questionGen(inputFile, outputFile)
-    with open('nouns.pkl', 'w') as f:
+    with open('nouns.pkl', 'wb') as f:
         pickle.dump(word_dict, f)
 
 if __name__ == '__main__':
