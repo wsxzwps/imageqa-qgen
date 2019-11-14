@@ -26,6 +26,7 @@ class ActivityNetCaptionDataset(Dataset):
         for line in raw:
             text, label = line.split('\t')
             data.append((text, label))
+        return data
 
     def __len__(self):
         return len(self.data)
