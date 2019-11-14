@@ -3,6 +3,7 @@ import torch.nn as nn
 from transformers import BertTokenizer, BertForMaskedLM, AdamW
 from torch.utils.data import DataLoader
 from data_loader import ActivityNetCaptionDataset
+from torch.utils.data.sampler import SubsetRandomSampler
 import numpy as np
 
 import sys
