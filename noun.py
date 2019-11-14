@@ -14,7 +14,7 @@ def gen(text, parsed_sentence, outputFile):
     position = []
     for i in range(len(parsed_sentence)):
         if parsed_sentence[i][1] == 'NN':
-            position.append[i]
+            position.append(i)
     if len(position): 
         idx = random.sample(position, 1)
         new_sentence = text[:]
