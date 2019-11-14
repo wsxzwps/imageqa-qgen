@@ -128,13 +128,13 @@ def main():
     optimizer = AdamW(model.parameters(), lr=lr)
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
-    max_epoch = 10
+    max_epoch = 3
     batch_size = 32
 
     train_data = 'noun_blank.txt'
     evaluation, trainld, testld  = loadData(train_data, batch_size)
     
-    # eval(evaluation, model, tokenizer)
+    eval(evaluation, model, tokenizer)
 
     train(trainld, max_epoch, model, optimizer, PATH)
     eval(testld, model, tokenizer)
