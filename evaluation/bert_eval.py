@@ -9,7 +9,7 @@ import numpy as np
 import sys
 import pickle
 
-GPU = False
+GPU = True
 
 def batchPadding(batch):
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
