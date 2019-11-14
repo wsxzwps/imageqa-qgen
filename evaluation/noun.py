@@ -57,7 +57,7 @@ def questionGen(inputFile, outputFile):
             line = f.readline()
 
 def main():
-    inputFile = 'train.txt'
+    inputFile = '../train.txt'
     outputFile = 'noun_blank.txt'
     questionGen(inputFile, outputFile)
     with open('nouns.pkl', 'wb') as f:
