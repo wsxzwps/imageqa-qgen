@@ -24,7 +24,7 @@ class ActivityNetCaptionDataset(Dataset):
         
         data = []
         for line in raw:
-            text, label = line.split('\t')
+            text, label = line.strip().split('\t')
             data.append((text, label))
         return data
 

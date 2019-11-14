@@ -90,18 +90,27 @@ def train(data, max_epoch, model, optimizer, PATH):
         model.save_pretrained(PATH)
     return
 
-def eval(data, model):
+def eval(data, model, tokenizer):
     model.eval()
+    correct = 0
+    total_num = 0
     for batch in data:
         batch_tensor, segments_tensor, attention_mask, labels, mask_positions = batch
         if GPU:
             batch_tensor = batch_tensor.cuda()
             segments_tensor = segments_tensor.cuda()
             attention_mask = attention_mask.cuda()             
-        
+        batch_size = batch_tensor.shape[0]
         output = model(batch_tensor, token_type_ids=segments_tensor, attention_mask=attention_mask, masked_lm_labels=batch_tensor)
         score = output[1]
-        predicted_index = torch.argmax(score[mask_positions])
+        predicted_index = torch.argmax(score[list(range(batch_size)), mask_positions], dim=1)
+        out_text = tokenizer.convert_ids_to_tokens(predicted_index)
+        total_num += batch_size
+        for i in range(batch_size):
+            if labels[i] == out_text[i]:
+                correct += 1
+    acc = correct / total_num
+    print(acc)
 
 def main():
     lr = 0.00005
@@ -117,16 +126,18 @@ def main():
         model = model.cuda()
 
     optimizer = AdamW(model.parameters(), lr=lr)
+    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+
     max_epoch = 10
     batch_size = 32
 
     train_data = 'noun_blank.txt'
     evaluation, train, test  = loadData(train_data, batch_size)
     
-    eval(evaluation, model)
+    eval(evaluation, model, tokenizer)
 
     train(train, max_epoch, model, optimizer, PATH)
-    eval(test, model)
+    eval(test, model, tokenizer)
 
 
 if __name__ == "__main__":
