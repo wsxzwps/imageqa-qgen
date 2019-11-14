@@ -132,12 +132,12 @@ def main():
     batch_size = 32
 
     train_data = 'noun_blank.txt'
-    evaluation, train, test  = loadData(train_data, batch_size)
+    evaluation, trainld, testld  = loadData(train_data, batch_size)
     
     # eval(evaluation, model, tokenizer)
 
-    train(train, max_epoch, model, optimizer, PATH)
-    eval(test, model, tokenizer)
+    train(trainld, max_epoch, model, optimizer, PATH)
+    eval(testld, model, tokenizer)
 
 
 if __name__ == "__main__":
