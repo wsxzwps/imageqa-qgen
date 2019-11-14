@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from transformers import BertTokenizer, BertForSequenceClassification, AdamW, BertModel
+from transformers import BertTokenizer, BertForMaskedLM, AdamW
 from torch.utils.data import DataLoader
 from data_loader import ActivityNetCaptionDataset
 import numpy as np
