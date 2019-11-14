@@ -129,12 +129,12 @@ def main():
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
     max_epoch = 10
-    batch_size = 16
+    batch_size = 32
 
     train_data = 'noun_blank.txt'
     evaluation, train, test  = loadData(train_data, batch_size)
     
-    eval(evaluation, model, tokenizer)
+    # eval(evaluation, model, tokenizer)
 
     train(train, max_epoch, model, optimizer, PATH)
     eval(test, model, tokenizer)
