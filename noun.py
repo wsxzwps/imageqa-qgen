@@ -16,7 +16,7 @@ def gen(text, parsed_sentence, outputFile):
         if parsed_sentence[i][1] == 'NN':
             position.append(i)
     if len(position): 
-        idx = random.sample(position, 1)
+        idx = random.sample(position, 1)[0]
         new_sentence = text[:]
         correct_word = new_sentence[idx]
         if correct_word in word_dict:
