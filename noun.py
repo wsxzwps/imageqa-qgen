@@ -27,14 +27,14 @@ def gen(text, parsed_sentence, outputFile):
         if idx > 0:
             if text[idx - 1].lower() in articles:
                 if idx == 1:
-                    text[idx - 1] = 'A/An'
+                    new_sentence[idx - 1] = 'A/An'
                 else:
-                    text[idx - 1] = 'a/an'
-            if text[idx - 1].lower() in possessive_pronouns:
+                    new_sentence[idx - 1] = 'a/an'
+            elif text[idx - 1].lower() in possessive_pronouns:
                 if idx == 1:
-                    text[idx - 1] = '/'.join([w.capitalize() for w in possessive_pronouns])
+                    new_sentence[idx - 1] = '/'.join([w.capitalize() for w in possessive_pronouns])
                 else:
-                    text[idx - 1] = '/'.join(possessive_pronouns)
+                    new_sentence[idx - 1] = '/'.join(possessive_pronouns)
 
         with open(outputFile, 'a') as f:                
             f.write(' '.join(new_sentence))
