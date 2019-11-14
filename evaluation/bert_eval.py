@@ -80,7 +80,7 @@ def train(data, max_epoch, model, optimizer, PATH):
                 attention_mask = attention_mask.cuda()             
             
             output = model(batch_tensor, token_type_ids=segments_tensor, attention_mask=attention_mask, masked_lm_labels=batch_tensor)
-            loss, score = output
+            loss = output[0]
             loss.backward()
             optimizer.step()
             running_loss += loss.item()
