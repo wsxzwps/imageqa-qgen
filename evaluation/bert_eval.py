@@ -104,7 +104,7 @@ def eval(data, model, tokenizer):
         output = model(batch_tensor, token_type_ids=segments_tensor, attention_mask=attention_mask, masked_lm_labels=batch_tensor)
         score = output[1]
         predicted_index = torch.argmax(score[list(range(batch_size)), mask_positions], dim=1)
-        out_text = tokenizer.convert_ids_to_tokens(predicted_index)
+        out_text = tokenizer.convert_ids_to_tokens(predicted_index.tolist())
         total_num += batch_size
         for i in range(batch_size):
             if labels[i] == out_text[i]:
