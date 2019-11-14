@@ -34,8 +34,8 @@ class ActivityNetCaptionDataset(Dataset):
     def __getitem__(self, idx):
         dataItem = self.data[idx]
         text = self.tokenizer.tokenize(dataItem[0])
-        indexed_tokens = self.tokenizer.convert_tokens_to_ids(
-            self.tokenizer.build_inputs_with_special_tokens(text))
+        indexed_tokens = self.tokenizer.build_inputs_with_special_tokens(
+            self.tokenizer.convert_tokens_to_ids(text))
         mask_position = indexed_tokens.index(self.maskid)
         segments_ids = self.tokenizer.create_token_type_ids_from_sequences(text)
 
