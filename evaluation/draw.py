@@ -17,6 +17,6 @@ plt.barh(x_pos, y, color='#004080')
 plt.ylabel("Word Frequency")
 plt.title("Masked Nouns Frequency")
 
-plt.yticks(x_pos, x)
+plt.yticks(x_pos * 1.5, x)
 plt.tight_layout()
 plt.savefig('wordfrequency.jpg')
