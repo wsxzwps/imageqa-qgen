@@ -44,7 +44,7 @@ def batchPadding(batch):
         batch_tensor[i, :len_pair] = pair[0]
         segments_tensor[i, :len_pair] = pair[1]
         attention_mask[i, :len_pair] = 1
-        mask_positions[i, :len_pair] = pair[2]
+        masked_lm_labels[i, :len_pair] = pair[2]
 
     return (batch_tensor, segments_tensor, attention_mask, labels, mask_positions, masked_lm_labels)
 
@@ -137,10 +137,9 @@ def main():
     train_data = 'noun_blank.txt'
     evaluation, trainld, testld  = loadData(train_data, batch_size)
     
-    # eval(evaluation, model, tokenizer)
+    eval(evaluation, model, tokenizer)
 
-    # model = train(trainld, max_epoch, model, optimizer, PATH)
-    eval(trainld, model, tokenizer)
+    model = train(trainld, max_epoch, model, optimizer, PATH)
     eval(testld, model, tokenizer)
 
 
