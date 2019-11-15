@@ -139,7 +139,7 @@ def main():
     train_data = 'noun_blank.txt'
     evaluation, trainld, testld  = loadData(train_data, batch_size)
     
-    eval(evaluation, model, tokenizer)
+    #eval(evaluation, model, tokenizer)
 
     model = train(trainld, max_epoch, model, optimizer, PATH)
     eval(testld, model, tokenizer)
