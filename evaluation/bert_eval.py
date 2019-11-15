@@ -88,7 +88,7 @@ def train(data, max_epoch, model, optimizer, PATH):
                 print("Epoch {}, batch {}: loss = {}".format(epoch, n, running_loss/50))
                 running_loss = 0
         model.save_pretrained(PATH)
-    return
+    return model
 
 def eval(data, model, tokenizer):
     model.eval()
@@ -114,7 +114,7 @@ def eval(data, model, tokenizer):
 
 def main():
     lr = 0.00005
-    PATH = '/home/ruoyaow/toys/bert/'
+    PATH = '/home/ruoyaow/imageqa-qgen/evaluation'
 
     if len(sys.argv) > 1 and sys.argv[1] == 'c':
         pretrained = PATH
@@ -128,15 +128,15 @@ def main():
     optimizer = AdamW(model.parameters(), lr=lr)
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
-    max_epoch = 3
+    max_epoch = 1
     batch_size = 32
 
     train_data = 'noun_blank.txt'
     evaluation, trainld, testld  = loadData(train_data, batch_size)
     
-    eval(evaluation, model, tokenizer)
+    # eval(evaluation, model, tokenizer)
 
-    train(trainld, max_epoch, model, optimizer, PATH)
+    # model = train(trainld, max_epoch, model, optimizer, PATH)
     eval(testld, model, tokenizer)
 
 
