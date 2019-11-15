@@ -136,7 +136,8 @@ def main():
     
     # eval(evaluation, model, tokenizer)
 
-    model = train(trainld, max_epoch, model, optimizer, PATH)
+    # model = train(trainld, max_epoch, model, optimizer, PATH)
+    eval(trainld, model, tokenizer)
     eval(testld, model, tokenizer)
 
 
