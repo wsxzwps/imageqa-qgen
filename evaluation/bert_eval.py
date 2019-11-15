@@ -80,7 +80,8 @@ def train(data, max_epoch, model, optimizer, PATH):
             if GPU:
                 batch_tensor = batch_tensor.cuda()
                 segments_tensor = segments_tensor.cuda()
-                attention_mask = attention_mask.cuda()             
+                attention_mask = attention_mask.cuda()
+                masked_lm_labels = masked_lm_labels.cuda()             
             
             output = model(batch_tensor, token_type_ids=segments_tensor, attention_mask=attention_mask, masked_lm_labels=masked_lm_labels)
             loss = output[0]
@@ -102,7 +103,8 @@ def eval(data, model, tokenizer):
         if GPU:
             batch_tensor = batch_tensor.cuda()
             segments_tensor = segments_tensor.cuda()
-            attention_mask = attention_mask.cuda()             
+            attention_mask = attention_mask.cuda()
+            masked_lm_labels = masked_lm_labels.cuda()             
         batch_size = batch_tensor.shape[0]
         output = model(batch_tensor, token_type_ids=segments_tensor, attention_mask=attention_mask, masked_lm_labels=masked_lm_labels)
         score = output[1]
