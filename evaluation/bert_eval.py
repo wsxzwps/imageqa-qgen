@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
-from transformers import BertTokenizer, BertForMaskedLM, AdamW, get_linear_schedule_with_warmup
+import transformsers
+from transformers import BertTokenizer, BertForMaskedLM, AdamW
 from torch.utils.data import DataLoader
 from data_loader import ActivityNetCaptionDataset
 from torch.utils.data.sampler import SubsetRandomSampler
