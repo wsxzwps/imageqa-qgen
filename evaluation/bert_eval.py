@@ -121,7 +121,7 @@ def eval(data, model, tokenizer):
     print(acc)
 
 def main():
-    lr = 0.00005
+    lr = 0.00001
     PATH = '/home/ruoyaow/imageqa-qgen/evaluation'
 
     if len(sys.argv) > 1 and sys.argv[1] == 'c':
@@ -141,7 +141,7 @@ def main():
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
     scheduler_cosine = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, max_epoch)
-    scheduler_warmup = GradualWarmupScheduler(optimizer, multiplier=8, total_epoch=max_epoch, after_scheduler=scheduler_cosine)    
+    scheduler_warmup = GradualWarmupScheduler(optimizer, multiplier=5, total_epoch=max_epoch, after_scheduler=scheduler_cosine)    
 
     train_data = 'noun_blank.txt'
     evaluation, trainld, testld  = loadData(train_data, batch_size)
