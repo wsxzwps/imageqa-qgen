@@ -143,7 +143,7 @@ def main():
     scheduler_cosine = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, max_epoch)
     scheduler_warmup = GradualWarmupScheduler(optimizer, multiplier=5, total_epoch=max_epoch, after_scheduler=scheduler_cosine)    
 
-    train_data = 'noun_blank.txt'
+    train_data = 'noun_blank_unbalance.txt'
     evaluation, trainld, testld  = loadData(train_data, batch_size)
     
     #eval(evaluation, model, tokenizer)
