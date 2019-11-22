@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-import transformsers
+import transformers
 from transformers import BertTokenizer, BertForMaskedLM, AdamW
 from torch.utils.data import DataLoader
 from data_loader import ActivityNetCaptionDataset
