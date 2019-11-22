@@ -21,7 +21,7 @@ def gen(text, parsed_sentence, outputFile):
     while len(position): 
         idx = random.sample(position, 1)[0]
         if text[idx] in word_dict and word_dict[text[idx]] >= THRESHOLD:
-            position.pop(idx)
+            position.remove(idx)
             continue
         new_sentence = text[:]
         correct_word = new_sentence[idx]
