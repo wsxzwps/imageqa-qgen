@@ -118,7 +118,7 @@ def eval(data, model, tokenizer):
     print(acc)
 
 def main():
-    lr = 0.00005
+    lr = 0.00001
     PATH = '/home/ruoyaow/imageqa-qgen/evaluation'
 
     if len(sys.argv) > 1 and sys.argv[1] == 'c':
@@ -133,7 +133,7 @@ def main():
     optimizer = AdamW(model.parameters(), lr=lr)
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
-    max_epoch = 10
+    max_epoch = 1
     batch_size = 32
 
     train_data = 'noun_blank.txt'
