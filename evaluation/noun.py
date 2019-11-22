@@ -20,9 +20,9 @@ def gen(text, parsed_sentence, outputFile):
 
     while len(position): 
         idx = random.sample(position, 1)[0]
-        if text[idx] in word_dict and word_dict[text[idx]] >= THRESHOLD:
-            position.remove(idx)
-            continue
+        # if text[idx] in word_dict and word_dict[text[idx]] >= THRESHOLD:
+        #     position.remove(idx)
+        #     continue
         new_sentence = text[:]
         correct_word = new_sentence[idx]
         if correct_word in word_dict:
@@ -63,9 +63,9 @@ def questionGen(inputFile, outputFile):
 
 def main():
     inputFile = '../train.txt'
-    outputFile = 'noun_blank.txt'
+    outputFile = 'noun_blank_unbalance.txt'
     questionGen(inputFile, outputFile)
-    with open('nouns.pkl', 'wb') as f:
+    with open('nouns_unbalance.pkl', 'wb') as f:
         pickle.dump(word_dict, f)
 
 if __name__ == '__main__':
