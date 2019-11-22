@@ -1,10 +1,10 @@
 import torch
 import torch.nn as nn
-import transformers
 from transformers import BertTokenizer, BertForMaskedLM, AdamW
 from torch.utils.data import DataLoader
 from data_loader import ActivityNetCaptionDataset
 from torch.utils.data.sampler import SubsetRandomSampler
+from warmup_scheduler import GradualWarmupScheduler
 import numpy as np
 
 import sys
@@ -139,15 +139,16 @@ def main():
 
     optimizer = AdamW(model.parameters(), lr=lr)
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-    scheduler = get_linear_schedule_with_warmup(AdamW, 1, 10)
-    
+
+    scheduler_cosine = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, max_epoch)
+    scheduler_warmup = GradualWarmupScheduler(optimizer, multiplier=8, total_epoch=max_epoch, after_scheduler=scheduler_cosine)    
 
     train_data = 'noun_blank.txt'
     evaluation, trainld, testld  = loadData(train_data, batch_size)
     
     #eval(evaluation, model, tokenizer)
 
-    model = train(trainld, max_epoch, model, optimizer, scheduler, PATH)
+    model = train(trainld, max_epoch, model, optimizer, scheduler_warmup, PATH)
     eval(testld, model, tokenizer)
 
 
