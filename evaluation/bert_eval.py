@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from transformers import BertTokenizer, BertForMaskedLM, AdamW
+from transformers import BertTokenizer, BertForMaskedLM, AdamW, get_linear_schedule_with_warmup
 from torch.utils.data import DataLoader
 from data_loader import ActivityNetCaptionDataset
 from torch.utils.data.sampler import SubsetRandomSampler
@@ -50,12 +50,13 @@ def batchPadding(batch):
 
     
 
-def loadData(data_path, batch_size):
+def loadData(data_path, batch_size, seed=0):
     dataset = ActivityNetCaptionDataset(data_path)
     eval_dataLoader = DataLoader(dataset, batch_size=batch_size, shuffle=True, collate_fn=batchPadding)
 
     total_train_data = len(dataset)
     indices = list(range(total_train_data))
+    np.random.seed(seed)
     np.random.shuffle(indices)
     split = int(total_train_data * 0.8)
     train_idx, val_idx = indices[:split], indices[split:]
@@ -68,7 +69,7 @@ def loadData(data_path, batch_size):
     return eval_dataLoader, finetune_train, finetune_val
 
 
-def train(data, max_epoch, model, optimizer, PATH):
+def train(data, max_epoch, model, optimizer, scheduler, PATH):
     
     model.train()
     running_loss = 0
@@ -87,6 +88,7 @@ def train(data, max_epoch, model, optimizer, PATH):
             loss = output[0]
             loss.backward()
             optimizer.step()
+            scheduler.step()
             running_loss += loss.item()
             if n%50 == 0 and n != 0:
                 print("Epoch {}, batch {}: loss = {}".format(epoch, n, running_loss/50))
@@ -130,18 +132,22 @@ def main():
     if GPU:
         model = model.cuda()
 
-    optimizer = AdamW(model.parameters(), lr=lr)
-    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
+    
     max_epoch = 10
     batch_size = 32
+
+    optimizer = AdamW(model.parameters(), lr=lr)
+    tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+    scheduler = get_linear_schedule_with_warmup(AdamW, 1, 10)
+    
 
     train_data = 'noun_blank.txt'
     evaluation, trainld, testld  = loadData(train_data, batch_size)
     
     #eval(evaluation, model, tokenizer)
 
-    model = train(trainld, max_epoch, model, optimizer, PATH)
+    model = train(trainld, max_epoch, model, optimizer, scheduler, PATH)
     eval(testld, model, tokenizer)
 
 
