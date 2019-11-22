@@ -16,11 +16,13 @@ def gen(text, parsed_sentence, outputFile):
     position = []
     for i in range(len(parsed_sentence)):
         if parsed_sentence[i][1] == 'NN':
-            word = parsed_sentence[i][0]
-            if word in word_dict and word_dict[word] < THRESHOLD:
-                position.append(i)
-    if len(position): 
+            position.append[i]
+
+    while len(position): 
         idx = random.sample(position, 1)[0]
+        if text[idx] in word_dict and word_dict[text[idx]] >= THRESHOLD:
+            position.pop(idx)
+            continue
         new_sentence = text[:]
         correct_word = new_sentence[idx]
         if correct_word in word_dict:
@@ -45,8 +47,7 @@ def gen(text, parsed_sentence, outputFile):
             f.write('\t')
             f.write(correct_word)
             f.write('\n')
-    else:
-        return
+        break
     
 
 def questionGen(inputFile, outputFile):
