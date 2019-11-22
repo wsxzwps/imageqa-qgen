@@ -118,7 +118,7 @@ def eval(data, model, tokenizer):
     print(acc)
 
 def main():
-    lr = 0.0005
+    lr = 0.00005
     PATH = '/home/ruoyaow/imageqa-qgen/evaluation'
 
     if len(sys.argv) > 1 and sys.argv[1] == 'c':
