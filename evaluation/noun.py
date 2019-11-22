@@ -6,6 +6,8 @@ import random
 # nlkt.download('punkt')
 # nlkt.download('averaged_perceptron_tagger')
 
+THRESHOLD = 500
+
 word_dict = {}
 articles = ['a', 'an']
 possessive_pronouns = ['his', 'her', 'their', 'its', 'your', 'my']
@@ -14,7 +16,9 @@ def gen(text, parsed_sentence, outputFile):
     position = []
     for i in range(len(parsed_sentence)):
         if parsed_sentence[i][1] == 'NN':
-            position.append(i)
+            word = parsed_sentence[i][0]
+            if word in word_dict and word_dict[word] < THRESHOLD:
+                position.append(i)
     if len(position): 
         idx = random.sample(position, 1)[0]
         new_sentence = text[:]
