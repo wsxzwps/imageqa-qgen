@@ -99,7 +99,7 @@ def train(data, max_epoch, model, optimizer, scheduler, PATH):
 
 def eval(data, model, tokenizer, word_dict):
     sorted_words = sorted(word_dict.items(), key= lambda k : (k[1], k[0]), reverse=True)
-    top_frequency_line = word_dict[sorted_words[39]]
+    top_frequency_line = word_dict[sorted_words[39][1]]
 
     model.eval()
     correct = 0
