@@ -159,7 +159,7 @@ def main():
     if GPU:
         model = model.cuda()
 
-    with open('nouns_unbalance.pkl', 'rb') as f:
+    with open('nouns.pkl', 'rb') as f:
         word_dict = pickle.load(f)
 
     max_epoch = 10
@@ -171,12 +171,12 @@ def main():
     scheduler_cosine = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, max_epoch)
     scheduler_warmup = GradualWarmupScheduler(optimizer, multiplier=5, total_epoch=max_epoch, after_scheduler=scheduler_cosine)    
 
-    train_data = 'noun_blank_unbalance.txt'
+    train_data = 'noun_blank.txt'
     evaluation, trainld, testld  = loadData(train_data, batch_size)
     
     #eval(evaluation, model, tokenizer)
 
-    # model = train(trainld, max_epoch, model, optimizer, scheduler_warmup, PATH)
+    model = train(trainld, max_epoch, model, optimizer, scheduler_warmup, PATH)
     eval(testld, model, tokenizer, word_dict)
 
 
