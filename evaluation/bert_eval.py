@@ -97,10 +97,20 @@ def train(data, max_epoch, model, optimizer, scheduler, PATH):
         model.save_pretrained(PATH)
     return model
 
-def eval(data, model, tokenizer):
+def eval(data, model, tokenizer, word_dict):
+    sorted_words = sorted(word_dict.items(), key= lambda k : (k[1], k[0]), reverse=True)
+    top_frequency_line = word_dict(sorted_words[39])
+
     model.eval()
     correct = 0
     total_num = 0
+
+    high_frequency_correct = 0
+    high_frequency_num = 0
+
+    low_frequency_correct = 0
+    low_frequency_num = 0
+
     for batch in data:
         batch_tensor, segments_tensor, attention_mask, labels, mask_positions, masked_lm_labels = batch
         if GPU:
@@ -117,8 +127,24 @@ def eval(data, model, tokenizer):
         for i in range(batch_size):
             if labels[i] == out_text[i]:
                 correct += 1
+                if word_dict[out_text[i]] >= top_frequency_line:
+                    high_frequency_correct += 1
+                    high_frequency_num += 1
+                else:
+                    low_frequency_correct += 1
+                    low_frequency_num += 1
+            else:
+                if word_dict[out_text[i]] >= top_frequency_line:
+                    high_frequency_num += 1
+                else:
+                    low_frequency_num += 1
     acc = correct / total_num
-    print(acc)
+    acc_high_frequency = high_frequency_correct / high_frequency_num
+    acc_low_frequency = low_frequency_correct / low_frequency_num
+
+    print("Overall accuracy:", acc)
+    print("High frequency words accuracy:", acc_high_frequency)
+    print("Low frequency words accuracy:", acc_low_frequency)
 
 def main():
     lr = 0.00001
@@ -133,6 +159,8 @@ def main():
     if GPU:
         model = model.cuda()
 
+    with open('nouns_unbalance.pkl', 'rb') as f:
+        word_dict = pickle.load(f)
 
     max_epoch = 10
     batch_size = 32
@@ -148,8 +176,8 @@ def main():
     
     #eval(evaluation, model, tokenizer)
 
-    model = train(trainld, max_epoch, model, optimizer, scheduler_warmup, PATH)
-    eval(testld, model, tokenizer)
+    # model = train(trainld, max_epoch, model, optimizer, scheduler_warmup, PATH)
+    eval(testld, model, tokenizer, word_dict)
 
 
 if __name__ == "__main__":
