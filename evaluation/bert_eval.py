@@ -127,14 +127,14 @@ def eval(data, model, tokenizer, word_dict):
         for i in range(batch_size):
             if labels[i] == out_text[i]:
                 correct += 1
-                if word_dict[out_text[i]] >= top_frequency_line:
+                if word_dict[labels[i]] >= top_frequency_line:
                     high_frequency_correct += 1
                     high_frequency_num += 1
                 else:
                     low_frequency_correct += 1
                     low_frequency_num += 1
             else:
-                if word_dict[out_text[i]] >= top_frequency_line:
+                if word_dict[labels[i]] >= top_frequency_line:
                     high_frequency_num += 1
                 else:
                     low_frequency_num += 1
