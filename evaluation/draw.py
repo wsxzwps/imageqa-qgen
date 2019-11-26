@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 with open('nouns_unbalance.pkl', 'rb') as f:
     data = pickle.load(f)
 
-sorted_words = sorted(data.items(), key= lambda k : (k[1], k[0]), reverse=True)
+sorted_words = sorted(data.items(), key= lambda k : k[1], reverse=True)
 num = 40
 
 x = [s[0] for s in sorted_words[:num]]
