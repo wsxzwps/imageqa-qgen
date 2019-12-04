@@ -63,9 +63,9 @@ def questionGen(inputFile, outputFile):
 
 def main():
     inputFile = '../train.txt'
-    outputFile = 'adjectives_balance.txt'
+    outputFile = 'adjectives_unbalance.txt'
     questionGen(inputFile, outputFile)
-    with open('adjectives_balance.pkl', 'wb') as f:
+    with open('adjectives_unbalance.pkl', 'wb') as f:
         pickle.dump(word_dict, f)
 
 if __name__ == '__main__':
