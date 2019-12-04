@@ -56,7 +56,7 @@ def questionGen(inputFile, outputFile):
     with open(inputFile, 'r') as f:
         line = f.readline()
         while line:
-            text = nltk.word_tokenize(line.strip())
+            text = nltk.word_tokenize(line.strip().lower())
             parsed_sentence = nltk.pos_tag(text)
             gen(text, parsed_sentence, outputFile)
             line = f.readline()
