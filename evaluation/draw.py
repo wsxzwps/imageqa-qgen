@@ -1,7 +1,7 @@
 import pickle
 import matplotlib.pyplot as plt
 
-with open('adjectives_balance.pkl', 'rb') as f:
+with open('adjectives_unbalance.pkl', 'rb') as f:
     data = pickle.load(f)
 
 sorted_words = sorted(data.items(), key= lambda k : k[1], reverse=True)
