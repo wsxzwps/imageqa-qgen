@@ -174,8 +174,8 @@ def main():
     train_data = 'adjectives_balance.txt'
     evaluation, trainld, testld  = loadData(train_data, batch_size)
     
-    eval(testld, model, tokenizer, word_dict)
-
+    # eval(testld, model, tokenizer, word_dict)
+    eval(evaluation, model, tokenizer, word_dict)
     # model = train(trainld, max_epoch, model, optimizer, scheduler_warmup, PATH)
     # eval(testld, model, tokenizer, word_dict)
 
