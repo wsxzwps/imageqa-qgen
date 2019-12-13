@@ -176,8 +176,8 @@ def main():
     
     eval(testld, model, tokenizer, word_dict)
     eval(evaluation, model, tokenizer, word_dict)
-    model = train(trainld, max_epoch, model, optimizer, scheduler_warmup, PATH)
-    eval(testld, model, tokenizer, word_dict)
+    # model = train(trainld, max_epoch, model, optimizer, scheduler_warmup, PATH)
+    # eval(testld, model, tokenizer, word_dict)
 
 
 if __name__ == "__main__":
