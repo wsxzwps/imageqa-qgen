@@ -63,9 +63,9 @@ def questionGen(inputFile, outputFile):
 
 def main():
     inputFile = '../train.txt'
-    outputFile = 'mix_unbalance.txt'
+    outputFile = 'mix_balance.txt'
     questionGen(inputFile, outputFile)
-    with open('mix_unbalance.pkl', 'wb') as f:
+    with open('mix_balance.pkl', 'wb') as f:
         pickle.dump(word_dict, f)
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 import pickle
 import matplotlib.pyplot as plt
 
-with open('adjectives_unbalance.pkl', 'rb') as f:
+with open('mix_unbalance.pkl', 'rb') as f:
     data = pickle.load(f)
 
 sorted_words = sorted(data.items(), key= lambda k : k[1], reverse=True)
@@ -19,4 +19,4 @@ plt.title("Masked Nouns Frequency")
 
 plt.yticks(x_pos, x)
 plt.tight_layout()
-plt.savefig('wordfrequency.jpg')
+plt.savefig('wordfrequency_unbalance_mix.jpg')
